@@ -1157,7 +1157,12 @@
             popupContent += `</div>`;
 
             const marker = L.marker(location.coords, { icon: markerIcon }).addTo(map);
-            marker.bindPopup(popupContent);
+            marker.bindPopup(popupContent, {
+                autoPan: true,
+                keepInView: true,
+                autoPanPaddingTopLeft: [30, 110],
+                autoPanPaddingBottomRight: [30, 30]
+            });
 
             // Store marker by country
             markers[location.country] = marker;
