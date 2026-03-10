@@ -207,6 +207,9 @@
                     <a href="https://www.instagram.com/arpittak.dev/" target="_blank" class="social-btn">
                         <i class="fab fa-instagram"></i>
                     </a>
+                    <a href="image/Arpit-Tak-Resume.pdf" target="_blank" class="social-btn" aria-label="Open Resume" title="Resume">
+                        <i class="fas fa-file-lines"></i>
+                    </a>
                 </div>
                 <div class="hero-cta-container">
                
@@ -977,6 +980,92 @@
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
             }
+        }
+
+        // UI Sound Effects (hover + click)
+        const SoundContext = window.AudioContext || window.webkitAudioContext;
+        let uiAudioCtx = null;
+        let lastHoverSoundAt = 0;
+        const uiInteractiveSelector = 'button, a, .checkpoint, .timeline-item-flat, .leaflet-control a';
+
+        function getUiAudio() {
+            if (!SoundContext) return null;
+            if (!uiAudioCtx) uiAudioCtx = new SoundContext();
+            if (uiAudioCtx.state === 'suspended') {
+                uiAudioCtx.resume().catch(() => {});
+            }
+            return uiAudioCtx;
+        }
+
+        function playUiTone({ startFreq, endFreq, duration = 0.06, volume = 0.02, type = 'sine' }) {
+            const ctx = getUiAudio();
+            if (!ctx) return;
+
+            const now = ctx.currentTime;
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            oscillator.type = type;
+            oscillator.frequency.setValueAtTime(startFreq, now);
+            oscillator.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
+
+            gainNode.gain.setValueAtTime(0.0001, now);
+            gainNode.gain.exponentialRampToValueAtTime(volume, now + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            oscillator.start(now);
+            oscillator.stop(now + duration + 0.01);
+        }
+
+        function unlockUiAudio() {
+            getUiAudio();
+        }
+
+        document.addEventListener('pointerdown', unlockUiAudio, { once: true });
+        document.addEventListener('keydown', unlockUiAudio, { once: true });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest(uiInteractiveSelector)) return;
+            playUiTone({
+                startFreq: 420,
+                endFreq: 280,
+                duration: 0.07,
+                volume: 0.018,
+                type: 'triangle'
+            });
+        });
+
+        if (window.matchMedia('(hover: hover)').matches) {
+            let lastHoveredInteractive = null;
+
+            document.addEventListener('mouseover', (event) => {
+                const interactive = event.target.closest(uiInteractiveSelector);
+                if (!interactive || interactive === lastHoveredInteractive) return;
+
+                const now = performance.now();
+                if (now - lastHoverSoundAt < 80) return;
+
+                lastHoverSoundAt = now;
+                lastHoveredInteractive = interactive;
+
+                playUiTone({
+                    startFreq: 520,
+                    endFreq: 690,
+                    duration: 0.05,
+                    volume: 0.012,
+                    type: 'sine'
+                });
+            });
+
+            document.addEventListener('mouseout', (event) => {
+                if (!lastHoveredInteractive) return;
+                if (lastHoveredInteractive.contains(event.relatedTarget)) return;
+                if (event.target === lastHoveredInteractive || lastHoveredInteractive.contains(event.target)) {
+                    lastHoveredInteractive = null;
+                }
+            });
         }
 
         // Smooth Scroll for Navigation
