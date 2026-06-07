@@ -3537,56 +3537,66 @@ body[data-theme="dark"] .nav-lazyfire {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 1rem;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text);
-  opacity: 0.7;
-  letter-spacing: 1px;
+  background: var(--white);
+  border: var(--border-width) solid var(--border);
+  border-radius: 6px;
+  box-shadow: 4px 4px 0 var(--border);
+  transition: all 0.2s ease;
+}
+
+.nav-availability:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--border);
 }
 
 .availability-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #86efac;
-  box-shadow: 0 0 0 2px rgba(134, 239, 172, 0.2);
+  background-color: #7cd992;
+  box-shadow: 0 0 0 2px rgba(124, 217, 146, 0.2);
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(134, 239, 172, 0.4); }
-  70% { box-shadow: 0 0 0 6px rgba(134, 239, 172, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(134, 239, 172, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(124, 217, 146, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(124, 217, 146, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 217, 146, 0); }
 }
 
 .lamp-theme-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: #f3f4f6;
-  border: 2px solid transparent;
-  color: var(--yellow);
+  min-height: 48px;
+  width: 48px;
+  background: var(--yellow);
+  border: var(--border-width) solid var(--border);
+  border-radius: 6px;
+  box-shadow: 4px 4px 0 var(--border);
+  color: var(--text);
   cursor: pointer;
   transition: all 0.2s ease;
   margin-right: 0.5rem;
 }
 
 .lamp-theme-btn:hover {
-  background-color: #e5e7eb;
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--border);
 }
 
 body[data-theme="dark"] .lamp-theme-btn {
-  background-color: #374151;
-  color: var(--yellow);
+  background: var(--yellow);
+  color: var(--text);
 }
 
-body[data-theme="dark"] .lamp-theme-btn:hover {
-  background-color: #4b5563;
+body[data-theme="dark"] .nav-availability {
+  background: var(--white);
 }
 
 @media (max-width: 768px) {
@@ -3594,8 +3604,8 @@ body[data-theme="dark"] .lamp-theme-btn:hover {
     display: none;
   }
   .lamp-theme-btn {
-    width: 35px;
-    height: 35px;
+    min-height: 36px;
+    width: 36px;
     margin-right: 0;
   }
 }
