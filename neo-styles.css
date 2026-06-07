@@ -3538,7 +3538,7 @@ body[data-theme="dark"] .nav-lazyfire {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  font-family: 'Space Mono', monospace;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text);
