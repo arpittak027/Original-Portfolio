@@ -181,11 +181,7 @@
                 <a href="#about" class="nav-link">About</a>
                 <a href="#experience" class="nav-link">Journey</a>
                 <a href="#skills" class="nav-link">Skills</a>
-             
                 <a href="#contact" class="nav-cta">Get in Touch!</a>
-                <button id="theme-toggle" class="theme-toggle-nav" aria-label="Toggle theme">
-                    <i class="fas fa-moon"></i>
-                </button>
             </div>
         </div>
     </nav>
@@ -955,33 +951,6 @@
             updateJourneyTimeline();
         });
 
-        // Theme Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-        const icon = themeToggle.querySelector('i');
-
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        body.setAttribute('data-theme', currentTheme);
-        updateIcon(currentTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const theme = body.getAttribute('data-theme');
-            const newTheme = theme === 'light' ? 'dark' : 'light';
-
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateIcon(newTheme);
-        });
-
-        function updateIcon(theme) {
-            if (theme === 'dark') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
-        }
 
         // UI Sound Effects (hover + click)
         const SoundContext = window.AudioContext || window.webkitAudioContext;
