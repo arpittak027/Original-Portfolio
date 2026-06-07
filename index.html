@@ -181,6 +181,17 @@
                 <a href="#about" class="nav-link">About</a>
                 <a href="#experience" class="nav-link">Journey</a>
                 <a href="#skills" class="nav-link">Skills</a>
+                <div class="nav-availability">
+                    <span class="availability-dot"></span>
+                    <span class="availability-text">AVAILABLE</span>
+                </div>
+                <button id="theme-toggle" class="lamp-theme-btn" aria-label="Toggle theme">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 4h8l3 8H5l3-8Z"/>
+                        <path d="M12 12v6"/>
+                        <path d="M9 18h6v2H9z"/>
+                    </svg>
+                </button>
                 <a href="#contact" class="nav-cta">Get in Touch!</a>
             </div>
         </div>
@@ -951,6 +962,21 @@
             updateJourneyTimeline();
         });
 
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            const body = document.body;
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            body.setAttribute('data-theme', currentTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const theme = body.getAttribute('data-theme');
+                const newTheme = theme === 'light' ? 'dark' : 'light';
+                body.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
 
         // UI Sound Effects (hover + click)
         const SoundContext = window.AudioContext || window.webkitAudioContext;
