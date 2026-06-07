@@ -3591,8 +3591,8 @@ body[data-theme="dark"] .nav-lazyfire {
 }
 
 body[data-theme="dark"] .lamp-theme-btn {
-  background: var(--yellow);
-  color: var(--text);
+  background: var(--white);
+  color: var(--yellow);
 }
 
 body[data-theme="dark"] .nav-availability {
