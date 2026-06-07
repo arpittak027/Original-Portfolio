@@ -3570,7 +3570,7 @@ body[data-theme="dark"] .nav-lazyfire {
   border-radius: 8px;
   background-color: #f3f4f6;
   border: 2px solid transparent;
-  color: #374151;
+  color: var(--yellow);
   cursor: pointer;
   transition: all 0.2s ease;
   margin-right: 0.5rem;
@@ -3582,7 +3582,7 @@ body[data-theme="dark"] .nav-lazyfire {
 
 body[data-theme="dark"] .lamp-theme-btn {
   background-color: #374151;
-  color: #f3f4f6;
+  color: var(--yellow);
 }
 
 body[data-theme="dark"] .lamp-theme-btn:hover {
