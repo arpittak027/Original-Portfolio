@@ -181,7 +181,7 @@
                 <a href="#about" class="nav-link">About</a>
                 <a href="#experience" class="nav-link">Journey</a>
                 <a href="#skills" class="nav-link">Skills</a>
-                <div class="nav-availability" id="available-btn" style="cursor:pointer;" title="Click to notify me of your visit!">
+                <div class="nav-availability">
                     <span class="availability-dot"></span>
                     <span class="availability-text">AVAILABLE</span>
                 </div>
@@ -1342,53 +1342,6 @@
         window.addEventListener('scroll', updateProgressBar);
         window.addEventListener('resize', updateProgressBar);
         updateProgressBar();
-
-        // Available Button Notification
-        const availableBtn = document.getElementById('available-btn');
-        if (availableBtn) {
-            availableBtn.addEventListener('click', async () => {
-                const originalText = availableBtn.querySelector('.availability-text').innerText;
-                availableBtn.querySelector('.availability-text').innerText = 'SENDING...';
-                
-                try {
-                    // Fetch IP and Location data (using ipapi.co as a free option without API key required for frontend)
-                    const ipRes = await fetch('https://ipapi.co/json/');
-                    const ipData = ipRes.ok ? await ipRes.json() : {};
-                    
-                    const payload = {
-                        time: new Date().toLocaleString(),
-                        country: ipData.country_name || 'Unknown',
-                        city: ipData.city || 'Unknown',
-                        browser: navigator.userAgent,
-                        device: navigator.platform,
-                        referrer: document.referrer || 'Direct/None',
-                        ip: ipData.ip || 'Unknown'
-                    };
-
-                    // Call the Netlify Function
-                    const response = await fetch('/.netlify/functions/notify', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (response.ok) {
-                        availableBtn.querySelector('.availability-text').innerText = 'NOTIFIED!';
-                        setTimeout(() => {
-                            availableBtn.querySelector('.availability-text').innerText = originalText;
-                        }, 3000);
-                    } else {
-                        throw new Error('Failed to send notification');
-                    }
-                } catch (error) {
-                    console.error('Notification error:', error);
-                    availableBtn.querySelector('.availability-text').innerText = 'ERROR';
-                    setTimeout(() => {
-                        availableBtn.querySelector('.availability-text').innerText = originalText;
-                    }, 3000);
-                }
-            });
-        }
 
     </script>
 </body>
