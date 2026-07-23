@@ -327,7 +327,7 @@
                 <div class="journey-timeline">
                     <h3 class="timeline-header">Education Journey</h3>
             <div class="timeline-list">
-                   <div class="timeline-item-flat" id="exp-1" data-country="Bengaluru">
+                   <div class="timeline-item-flat" id="exp-1" data-country="Jaipur">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content-flat">
                         <h4 class="timeline-title">Bachelor of Engineering (B.E.) in Computer Science and Engineering</h4>
@@ -550,7 +550,7 @@
                             </div>
                             <span class="badge">2022 - 2026</span>
                         </div>
-                        <p class="education-location"><i class="fas fa-map-marker-alt"></i> Bengaluru, Karnataka, India</p>
+                        <p class="education-location"><i class="fas fa-map-marker-alt"></i> Jaipur, Rajasthan, India</p>
                     </div>
                 </div>
                 <div class="languages-column">
@@ -1186,7 +1186,7 @@
         setTimeout(matrixTypingEffect, 500);
 
         // Journey Map with Leaflet
-        const initialView = { center: [12.977383, 77.741466], zoom: 6 };
+        const initialView = { center: [26.9124, 75.7873], zoom: 6 };
 
         const map = L.map('journey-map', {
             center: initialView.center,
@@ -1223,11 +1223,11 @@
         // Group locations by country
         const locations = [
             {
-                coords: [12.977383, 77.741466],
-                country: 'Bengaluru',
+                coords: [26.9124, 75.7873],
+                country: 'Jaipur',
                 companies: [
                     {
-                        city: 'Karnataka, India',
+                        city: 'Rajasthan, India',
                         company: 'Visvesvaraya Technological University(Acharya Institute of Technology)',
                         period: '2022 - 2026',
                         role: 'B.E. Computer Science and Engineering'
@@ -1241,7 +1241,7 @@
 
         // Add custom neo-brutalist markers
         locations.forEach(location => {
-            const isCurrent = location.country === 'Bengaluru';
+            const isCurrent = location.country === 'Jaipur';
             const markerIcon = L.divIcon({
                 className: isCurrent ? 'neo-marker neo-marker-current' : 'neo-marker',
                 html: `
