@@ -209,15 +209,6 @@
                             <path d="M9 18h6v2H9z" />
                         </svg>
                     </button>
-                    <button id="music-toggle" class="music-toggle-btn" aria-label="Play background music" title="Play background music">
-                        <span class="music-bars" aria-hidden="true">
-                            <span class="music-bar"></span>
-                            <span class="music-bar"></span>
-                            <span class="music-bar"></span>
-                            <span class="music-bar"></span>
-                        </span>
-                        <i class="fas fa-volume-xmark music-muted-icon" aria-hidden="true"></i>
-                    </button>
                     <a href="#contact" class="nav-cta">Get in Touch!</a>
                 </div>
             </div>
@@ -733,19 +724,15 @@
     <!-- Background Audio Element -->
     <audio id="portfolio-bg-music" src="bg-music.mp3" loop preload="auto"></audio>
 
-    <!-- Floating Neo-Brutalist Music Dock -->
-    <div id="floating-music-dock" class="floating-music-dock" role="button" tabindex="0" aria-label="Play background music" title="Play background music">
-        <div class="fmd-icon-wrap" aria-hidden="true">
-            <span class="music-bars">
-                <span class="music-bar"></span>
-                <span class="music-bar"></span>
-                <span class="music-bar"></span>
-                <span class="music-bar"></span>
-            </span>
-            <i class="fas fa-volume-xmark music-muted-icon"></i>
-        </div>
-        <span class="fmd-label">BGM: OFF</span>
-    </div>
+    <!-- Floating Circular Music Button (Bottom Right) -->
+    <button id="music-circle-btn" class="music-circle-btn" aria-label="Play background music" title="Play background music">
+        <span class="music-bars" aria-hidden="true">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+            <span class="bar bar-3"></span>
+            <span class="bar bar-4"></span>
+        </span>
+    </button>
 
     <script>
         // Always start at top of page on reload
@@ -1110,7 +1097,7 @@
         const SoundContext = window.AudioContext || window.webkitAudioContext;
         let uiAudioCtx = null;
         let lastHoverSoundAt = 0;
-        const uiInteractiveSelector = 'button, a, .checkpoint, .timeline-item-flat, .leaflet-control a, .floating-music-dock';
+        const uiInteractiveSelector = 'button, a, .checkpoint, .timeline-item-flat, .leaflet-control a, .music-circle-btn';
 
         function getUiAudio() {
             if (!SoundContext) return null;
@@ -1455,11 +1442,9 @@
         window.addEventListener('resize', updateProgressBar);
         updateProgressBar();
 
-        // Background Music Controller
+        // Background Music Controller (Bottom-Right Circular Button)
         const bgAudio = document.getElementById('portfolio-bg-music');
-        const musicToggleBtn = document.getElementById('music-toggle');
-        const floatingMusicDock = document.getElementById('floating-music-dock');
-        const fmdLabel = floatingMusicDock ? floatingMusicDock.querySelector('.fmd-label') : null;
+        const musicCircleBtn = document.getElementById('music-circle-btn');
         let isMusicPlaying = false;
         let audioFadeInterval = null;
         const TARGET_BGM_VOLUME = 0.32;
@@ -1485,20 +1470,11 @@
 
         function setMusicUiState(playing) {
             isMusicPlaying = playing;
-            if (musicToggleBtn) {
-                musicToggleBtn.classList.toggle('playing', playing);
+            if (musicCircleBtn) {
+                musicCircleBtn.classList.toggle('playing', playing);
                 const actionText = playing ? 'Mute background music' : 'Play background music';
-                musicToggleBtn.setAttribute('aria-label', actionText);
-                musicToggleBtn.setAttribute('title', actionText);
-            }
-            if (floatingMusicDock) {
-                floatingMusicDock.classList.toggle('playing', playing);
-                const actionText = playing ? 'Mute background music' : 'Play background music';
-                floatingMusicDock.setAttribute('aria-label', actionText);
-                floatingMusicDock.setAttribute('title', actionText);
-                if (fmdLabel) {
-                    fmdLabel.textContent = playing ? 'BGM: ON' : 'BGM: OFF';
-                }
+                musicCircleBtn.setAttribute('aria-label', actionText);
+                musicCircleBtn.setAttribute('title', actionText);
             }
         }
 
@@ -1535,19 +1511,12 @@
             }
         }
 
-        if (musicToggleBtn) {
-            musicToggleBtn.addEventListener('click', (e) => {
+        if (musicCircleBtn) {
+            musicCircleBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 toggleMusic();
             });
-        }
-
-        if (floatingMusicDock) {
-            floatingMusicDock.addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleMusic();
-            });
-            floatingMusicDock.addEventListener('keydown', (e) => {
+            musicCircleBtn.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     toggleMusic();

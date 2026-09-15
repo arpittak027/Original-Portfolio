@@ -3599,38 +3599,42 @@ body[data-theme="dark"] .nav-availability {
   background: var(--white);
 }
 
-/* Background Music Controls */
-.music-toggle-btn {
+/* Circular Floating Music Button (Bottom Right) */
+.music-circle-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ece7db;
+  border: 1.5px solid #dcd4c3;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  width: 48px;
-  background: var(--white);
-  border: var(--border-width) solid var(--border);
-  border-radius: 6px;
-  box-shadow: 4px 4px 0 var(--border);
-  color: var(--text);
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-right: 0.5rem;
-  position: relative;
-  overflow: hidden;
+  padding: 0;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+  user-select: none;
+  outline: none;
 }
 
-.music-toggle-btn:hover {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 var(--border);
+.music-circle-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14);
+  background: #e6dfd1;
 }
 
-.music-toggle-btn .music-muted-icon {
-  font-size: 1.15rem;
-  display: block;
-  transition: transform 0.2s ease;
+.music-circle-btn:active {
+  transform: scale(0.95);
 }
 
-.music-toggle-btn .music-bars {
-  display: none;
+.music-circle-btn .music-bars {
+  display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: 2.5px;
@@ -3638,152 +3642,92 @@ body[data-theme="dark"] .nav-availability {
   width: 20px;
 }
 
-.music-toggle-btn.playing {
-  background: var(--primary);
-  color: #000000;
-}
-
-.music-toggle-btn.playing .music-muted-icon {
-  display: none;
-}
-
-.music-toggle-btn.playing .music-bars {
-  display: flex;
-}
-
-.music-bar {
-  width: 3px;
-  background: currentColor;
-  border-radius: 2px;
-  height: 100%;
+.music-circle-btn .bar {
+  width: 2.5px;
+  background-color: #544622;
+  border-radius: 1px;
   transform-origin: bottom;
+  transition: height 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
 }
 
-.music-toggle-btn.playing .music-bar,
-.floating-music-dock.playing .music-bar {
-  animation: eq-bounce 0.8s ease-in-out infinite alternate;
+/* Resting heights matching screenshot */
+.music-circle-btn .bar-1 { height: 9px; }
+.music-circle-btn .bar-2 { height: 6px; }
+.music-circle-btn .bar-3 { height: 12px; }
+.music-circle-btn .bar-4 { height: 15px; }
+
+/* When paused */
+.music-circle-btn:not(.playing) .bar {
+  opacity: 0.65;
 }
 
-.music-bar:nth-child(1) {
-  height: 40%;
-  animation-delay: 0.1s !important;
-  animation-duration: 0.7s !important;
-}
-.music-bar:nth-child(2) {
-  height: 90%;
-  animation-delay: 0.25s !important;
-  animation-duration: 0.9s !important;
-}
-.music-bar:nth-child(3) {
-  height: 60%;
-  animation-delay: 0.05s !important;
-  animation-duration: 0.6s !important;
-}
-.music-bar:nth-child(4) {
-  height: 80%;
-  animation-delay: 0.2s !important;
-  animation-duration: 0.85s !important;
+/* When playing - active equalizer visualizer */
+.music-circle-btn.playing {
+  background: #f0eae0;
+  box-shadow: 0 4px 18px rgba(84, 70, 34, 0.16), 0 0 0 2px rgba(84, 70, 34, 0.2);
 }
 
-@keyframes eq-bounce {
+.music-circle-btn.playing .bar {
+  opacity: 1;
+  background-color: #3e3214;
+  animation: visualizer-bounce 0.85s ease-in-out infinite alternate;
+}
+
+.music-circle-btn.playing .bar-1 {
+  animation-delay: 0.1s;
+  animation-duration: 0.75s;
+}
+
+.music-circle-btn.playing .bar-2 {
+  animation-delay: 0.3s;
+  animation-duration: 0.95s;
+}
+
+.music-circle-btn.playing .bar-3 {
+  animation-delay: 0.05s;
+  animation-duration: 0.65s;
+}
+
+.music-circle-btn.playing .bar-4 {
+  animation-delay: 0.25s;
+  animation-duration: 0.85s;
+}
+
+@keyframes visualizer-bounce {
   0% {
-    transform: scaleY(0.2);
+    height: 4px;
   }
   50% {
-    transform: scaleY(1);
+    height: 16px;
   }
   100% {
-    transform: scaleY(0.4);
+    height: 7px;
   }
 }
 
-/* Floating Neo-Brutalist Music Dock */
-.floating-music-dock {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 9999;
-  background: var(--white);
-  border: var(--border-width) solid var(--border);
-  border-radius: 8px;
-  box-shadow: 4px 4px 0 var(--border);
-  padding: 8px 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: var(--text);
-  transition: all 0.2s ease;
-  user-select: none;
+/* Dark mode theme support */
+body[data-theme="dark"] .music-circle-btn {
+  background: rgba(36, 36, 36, 0.92);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
 }
 
-.floating-music-dock:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--border);
+body[data-theme="dark"] .music-circle-btn:hover {
+  background: rgba(48, 48, 48, 1);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6);
 }
 
-.floating-music-dock .fmd-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
+body[data-theme="dark"] .music-circle-btn .bar {
+  background-color: #dcd4c3;
 }
 
-.floating-music-dock .music-muted-icon {
-  font-size: 0.95rem;
-  display: block;
+body[data-theme="dark"] .music-circle-btn.playing {
+  background: rgba(42, 42, 42, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(124, 217, 146, 0.4);
 }
 
-.floating-music-dock .music-bars {
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 2.5px;
-  height: 16px;
-  width: 18px;
-}
-
-.floating-music-dock.playing {
-  background: var(--primary);
-  color: #000000;
-}
-
-.floating-music-dock.playing .music-muted-icon {
-  display: none;
-}
-
-.floating-music-dock.playing .music-bars {
-  display: flex;
-}
-
-/* Dark mode overrides */
-body[data-theme="dark"] .music-toggle-btn {
-  background: var(--white);
-  color: var(--text);
-  border-color: var(--border);
-}
-
-body[data-theme="dark"] .music-toggle-btn.playing {
-  background: var(--primary);
-  color: #000000;
-  border-color: var(--border);
-}
-
-body[data-theme="dark"] .floating-music-dock {
-  background: var(--white);
-  color: var(--text);
-  border-color: var(--border);
-}
-
-body[data-theme="dark"] .floating-music-dock.playing {
-  background: var(--primary);
-  color: #000000;
-  border-color: var(--border);
+body[data-theme="dark"] .music-circle-btn.playing .bar {
+  background-color: #7cd992;
 }
 
 @media (max-width: 768px) {
@@ -3795,16 +3739,12 @@ body[data-theme="dark"] .floating-music-dock.playing {
     width: 36px;
     margin-right: 0;
   }
-  .music-toggle-btn {
-    min-height: 36px;
-    width: 36px;
-    margin-right: 0;
-  }
-  .floating-music-dock {
-    bottom: 16px;
-    right: 16px;
-    padding: 6px 10px;
-    font-size: 0.75rem;
+  .music-circle-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
   }
 }
+
 
