@@ -3599,6 +3599,193 @@ body[data-theme="dark"] .nav-availability {
   background: var(--white);
 }
 
+/* Background Music Controls */
+.music-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  width: 48px;
+  background: var(--white);
+  border: var(--border-width) solid var(--border);
+  border-radius: 6px;
+  box-shadow: 4px 4px 0 var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.music-toggle-btn:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--border);
+}
+
+.music-toggle-btn .music-muted-icon {
+  font-size: 1.15rem;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.music-toggle-btn .music-bars {
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5px;
+  height: 18px;
+  width: 20px;
+}
+
+.music-toggle-btn.playing {
+  background: var(--primary);
+  color: #000000;
+}
+
+.music-toggle-btn.playing .music-muted-icon {
+  display: none;
+}
+
+.music-toggle-btn.playing .music-bars {
+  display: flex;
+}
+
+.music-bar {
+  width: 3px;
+  background: currentColor;
+  border-radius: 2px;
+  height: 100%;
+  transform-origin: bottom;
+}
+
+.music-toggle-btn.playing .music-bar,
+.floating-music-dock.playing .music-bar {
+  animation: eq-bounce 0.8s ease-in-out infinite alternate;
+}
+
+.music-bar:nth-child(1) {
+  height: 40%;
+  animation-delay: 0.1s !important;
+  animation-duration: 0.7s !important;
+}
+.music-bar:nth-child(2) {
+  height: 90%;
+  animation-delay: 0.25s !important;
+  animation-duration: 0.9s !important;
+}
+.music-bar:nth-child(3) {
+  height: 60%;
+  animation-delay: 0.05s !important;
+  animation-duration: 0.6s !important;
+}
+.music-bar:nth-child(4) {
+  height: 80%;
+  animation-delay: 0.2s !important;
+  animation-duration: 0.85s !important;
+}
+
+@keyframes eq-bounce {
+  0% {
+    transform: scaleY(0.2);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0.4);
+  }
+}
+
+/* Floating Neo-Brutalist Music Dock */
+.floating-music-dock {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: var(--white);
+  border: var(--border-width) solid var(--border);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--border);
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.floating-music-dock:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--border);
+}
+
+.floating-music-dock .fmd-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.floating-music-dock .music-muted-icon {
+  font-size: 0.95rem;
+  display: block;
+}
+
+.floating-music-dock .music-bars {
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5px;
+  height: 16px;
+  width: 18px;
+}
+
+.floating-music-dock.playing {
+  background: var(--primary);
+  color: #000000;
+}
+
+.floating-music-dock.playing .music-muted-icon {
+  display: none;
+}
+
+.floating-music-dock.playing .music-bars {
+  display: flex;
+}
+
+/* Dark mode overrides */
+body[data-theme="dark"] .music-toggle-btn {
+  background: var(--white);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+body[data-theme="dark"] .music-toggle-btn.playing {
+  background: var(--primary);
+  color: #000000;
+  border-color: var(--border);
+}
+
+body[data-theme="dark"] .floating-music-dock {
+  background: var(--white);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+body[data-theme="dark"] .floating-music-dock.playing {
+  background: var(--primary);
+  color: #000000;
+  border-color: var(--border);
+}
+
 @media (max-width: 768px) {
   .nav-availability {
     display: none;
@@ -3608,4 +3795,16 @@ body[data-theme="dark"] .nav-availability {
     width: 36px;
     margin-right: 0;
   }
+  .music-toggle-btn {
+    min-height: 36px;
+    width: 36px;
+    margin-right: 0;
+  }
+  .floating-music-dock {
+    bottom: 16px;
+    right: 16px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
 }
+
