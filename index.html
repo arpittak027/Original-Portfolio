@@ -1524,18 +1524,25 @@
             });
         }
 
-        // Auto-resume on first user gesture if previously enabled
+        // Auto-play music if not explicitly disabled by user
         const savedBgmPref = localStorage.getItem('arpit-bgm-preference');
-        if (savedBgmPref === 'on') {
-            const resumeOnUserGesture = () => {
-                if (!isMusicPlaying && localStorage.getItem('arpit-bgm-preference') === 'on') {
+        if (savedBgmPref !== 'off') {
+            const tryAutoPlay = () => {
+                if (!isMusicPlaying && localStorage.getItem('arpit-bgm-preference') !== 'off') {
                     startMusic();
                 }
-                document.removeEventListener('pointerdown', resumeOnUserGesture);
-                document.removeEventListener('keydown', resumeOnUserGesture);
+                document.removeEventListener('pointerdown', tryAutoPlay);
+                document.removeEventListener('keydown', tryAutoPlay);
             };
-            document.addEventListener('pointerdown', resumeOnUserGesture, { once: true });
-            document.addEventListener('keydown', resumeOnUserGesture, { once: true });
+            
+            // Try autoplay immediately (will work if browser allows it, e.g., after reload)
+            if (!isMusicPlaying) {
+                startMusic();
+            }
+
+            // Fallback: start on first user interaction (required by most modern browsers for new visitors)
+            document.addEventListener('pointerdown', tryAutoPlay, { once: true });
+            document.addEventListener('keydown', tryAutoPlay, { once: true });
         }
 
     </script>
