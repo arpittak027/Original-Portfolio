@@ -1478,20 +1478,27 @@
             }
         }
 
+        let isTryingToPlay = false;
+
         function startMusic() {
-            if (!bgAudio) return;
+            if (!bgAudio) return Promise.reject("No bgAudio");
+            
             bgAudio.volume = 0;
             const playPromise = bgAudio.play();
+            
             if (playPromise !== undefined) {
-                playPromise.then(() => {
+                return playPromise.then(() => {
                     setMusicUiState(true);
                     localStorage.setItem('arpit-bgm-preference', 'on');
                     fadeAudio(bgAudio, TARGET_BGM_VOLUME, 500);
                 }).catch((err) => {
                     console.log('Background music playback prevented:', err);
                     setMusicUiState(false);
+                    throw err;
                 });
             }
+            
+            return Promise.resolve();
         }
 
         function stopMusic() {
@@ -1527,24 +1534,120 @@
         // Auto-play music if not explicitly disabled by user
         const savedBgmPref = localStorage.getItem('arpit-bgm-preference');
         if (savedBgmPref !== 'off') {
+            const interactionEvents = ['pointerdown', 'keydown', 'click', 'scroll', 'touchstart'];
             const tryAutoPlay = () => {
                 if (!isMusicPlaying && localStorage.getItem('arpit-bgm-preference') !== 'off') {
-                    startMusic();
+                    startMusic().then(() => {
+                        interactionEvents.forEach(event => {
+                            document.removeEventListener(event, tryAutoPlay);
+                        });
+                    }).catch(err => {
+                        // Playback prevented, keep listening for the next interaction
+                    });
                 }
-                document.removeEventListener('pointerdown', tryAutoPlay);
-                document.removeEventListener('keydown', tryAutoPlay);
             };
             
             // Try autoplay immediately (will work if browser allows it, e.g., after reload)
             if (!isMusicPlaying) {
-                startMusic();
+                startMusic().catch(err => { /* Handle silently */ });
             }
 
             // Fallback: start on first user interaction (required by most modern browsers for new visitors)
-            document.addEventListener('pointerdown', tryAutoPlay, { once: true });
-            document.addEventListener('keydown', tryAutoPlay, { once: true });
+            interactionEvents.forEach(event => {
+                document.addEventListener(event, tryAutoPlay);
+            });
         }
 
+    </script>
+
+    <!-- Chatbot Widget -->
+    <button id="chat-widget-btn" aria-label="Open Chatbot" title="Chat with AI">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <div id="chat-widget-container">
+        <div class="chat-header">
+            <span>Ask about Arpit</span>
+            <button id="close-chat-btn" aria-label="Close Chat"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-message bot">Hi! I'm Arpit's AI assistant. What would you like to know about him?</div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="chat-input" placeholder="Type a message..." aria-label="Chat input" />
+            <button id="send-chat-btn" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot Logic
+        const chatWidgetBtn = document.getElementById('chat-widget-btn');
+        const chatWidgetContainer = document.getElementById('chat-widget-container');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatBtn = document.getElementById('send-chat-btn');
+
+        chatWidgetBtn.addEventListener('click', () => {
+            chatWidgetContainer.classList.add('open');
+            chatInput.focus();
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatWidgetContainer.classList.remove('open');
+        });
+
+        const qaPairs = [
+            { keywords: ['name', 'who are you', 'about'], answer: "I am Arpit Tak, a Full-Stack Developer passionate about building modern web applications." },
+            { keywords: ['education', 'college', 'degree', 'university', 'study'], answer: "I completed my B.E. in Computer Science and Engineering from Visvesvaraya Technological University (2022-2026)." },
+            { keywords: ['speak', 'speaking', 'spoken', 'fluent', 'fluency', 'hindi', 'english', 'kannada'], answer: "I speak English and Hindi fluently, and I also know some Kannada!" },
+            { keywords: ['skills', 'technologies', 'tech stack', 'know', 'frontend', 'backend', 'language', 'languages', 'langauges'], answer: "My skills include React, Node.js, JavaScript, TypeScript, MongoDB, SQL, HTML, CSS, and more." },
+            { keywords: ['contact', 'email', 'reach', 'hire', 'hiring', 'hirring', 'linkedin', 'github', 'instagram', 'social', 'socials', 'connect'], answer: "You can reach me via the contact section, or check out my LinkedIn and GitHub profiles." },
+            { keywords: ['experience', 'work', 'job'], answer: "I'm a full-stack developer experienced in building modern web applications. Check out my journey section for more details!" },
+            { keywords: ['projects', 'portfolio', 'built'], answer: "I have built several projects including 'Sur', an interactive web experience. You can see more in my projects section." },
+            { keywords: ['hello', 'hi', 'hey'], answer: "Hello! Feel free to ask me anything about Arpit's skills, education, or projects." }
+        ];
+
+        function getBotResponse(input) {
+            const lowerInput = input.toLowerCase();
+            for (let qa of qaPairs) {
+                if (qa.keywords.some(keyword => {
+                    const regex = new RegExp(`\\b${keyword}\\b`, 'i');
+                    return regex.test(lowerInput);
+                })) {
+                    return qa.answer;
+                }
+            }
+            return "I am Arpit's AI assistant. I can only answer questions about him!";
+        }
+
+        function addMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('chat-message', sender);
+            msgDiv.innerText = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleSend() {
+            const text = chatInput.value.trim();
+            if (text === '') return;
+            
+            addMessage(text, 'user');
+            chatInput.value = '';
+            
+            setTimeout(() => {
+                const response = getBotResponse(text);
+                addMessage(response, 'bot');
+            }, 500);
+        }
+
+        sendChatBtn.addEventListener('click', handleSend);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
     </script>
 </body>
 
