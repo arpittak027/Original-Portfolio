@@ -1534,7 +1534,7 @@
         // Auto-play music if not explicitly disabled by user
         const savedBgmPref = localStorage.getItem('arpit-bgm-preference');
         if (savedBgmPref !== 'off') {
-            const interactionEvents = ['pointerdown', 'keydown', 'click', 'scroll', 'touchstart'];
+            const interactionEvents = ['pointerdown', 'keydown', 'click', 'touchstart'];
             const tryAutoPlay = () => {
                 if (!isMusicPlaying && localStorage.getItem('arpit-bgm-preference') !== 'off') {
                     startMusic().then(() => {
