@@ -3475,9 +3475,24 @@ body[data-theme="dark"] .language-item:hover {
   box-shadow: 2px 2px 0 var(--border);
 }
 
+.creator-demo {
+  background: var(--yellow);
+  color: #000000;
+}
+
+.creator-demo:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--border);
+}
+
 /* Dark mode for projects */
 body[data-theme="dark"] .creator-project {
   background: #3a3a3a;
+}
+
+body[data-theme="dark"] .creator-demo {
+  background: var(--primary);
+  color: #000000;
 }
 
 body[data-theme="dark"] .nav-lazyfire {
